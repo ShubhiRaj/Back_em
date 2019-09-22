@@ -16,17 +16,21 @@
     <input type="text" id="img" name="user_img" v-model="message" placeholder="Enter URL">
   </fieldset>
  
-  <button type="submit">Register</button>
+  <button  v-on:click="register_api()">Register</button>
 
   </form>
   <form>
     <fieldset>
       <legend><span class="number">2</span> Recieve Money</legend>
+      <label for="money">Name:</label>
+      <input type="number" id="amount" name="user_amount" v-model="message" placeholder="Enter Name">
+      <label for="money">Image URL:</label>
+      <input type="number" id="amount" name="user_amount" v-model="message" placeholder="Enter Image">
       <label for="money">How much money would you like:</label>
       <input type="number" id="amount" name="user_amount" v-model="message" placeholder="Enter Amount">
     </fieldset>
 
-    <button type="submit">Sign Up</button>
+    <button v-on:click="recieve_money()">Ready to go!</button>
   </form>
   </div>
 
@@ -34,14 +38,82 @@
 </template>
 
 <script>
+    import axios from 'axios';
+    var faceIdDetected = '';
 export default {
   name: 'app',
   data () {
     return {
       msg: "Welcome to Back'Em"
     }
+  },
+  methods: {
+    register_api(){
+        // console.log("Here")
+        // ,
+        axios({
+          method: "POST",
+          "url":"https://canadacentral.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false&recognitionModel=recognition_01&returnRecognitionModel=false&detectionModel=detection_01"
+          , "data" :{
+                    'url': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Leonardo_DiCaprio_January_2014.jpg/170px-Leonardo_DiCaprio_January_2014.jpg'
+          },
+          "headers" :{
+                    "Ocp-Apim-Subscription-Key":"6387bed598264107aeb7b956692bee3a",
+                    "Content-Type":"application/json",
+                    "Host": "canadacentral.api.cognitive.microsoft.com"
+              }
+          })
+          .then(response => {
+            var objectreturn = ((JSON.stringify(JSON.parse(JSON.stringify(response)).data)));
+            faceIdDetected = JSON.parse(objectreturn.slice(1,objectreturn.length-1)).faceId;
+            alert(faceIdDetected);
+            axios({
+            method: "PATCH",
+            "url":"https://back-em.firebaseio.com/.json"
+            , "data" :{
+                      'Jake': {
+                        'amount' : 0,
+                        'faceId' : faceIdDetected,
+                        'name' : 'Jake'
+                      }
+            }
+            })
+            .then(response => {
+              alert("Yes");
+              
+            }
+            , error=> {console.error(error);
+            });
+          }
+          , error=> {console.error(error);
+          });
+          
+        // alert("Testing");
+      }
+    },
+    recieve_money(){
+      // alert("YES");
+      axios({
+          method: "POST",
+          "url":"https://canadacentral.api.cognitive.microsoft.com/face/v1.0/verify"
+          , "data" :{
+                    'faceId1': '3d8d1d1a-3cd5-4b3f-a56e-aca162ed490e',
+               'faceId2': '5dcfb516-f1c8-4618-abf0-3650c085a537'
+          },
+          "headers" :{
+                    "Ocp-Apim-Subscription-Key":"6387bed598264107aeb7b956692bee3a",
+                    "Content-Type":"application/json",
+                    "Host": "canadacentral.api.cognitive.microsoft.com"
+              }
+          })
+          .then(response => {
+            alert(response);
+          }
+          , error=> {console.error(error);
+          });
+    }
   }
-}
+
 
 </script>
 
