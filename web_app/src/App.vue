@@ -1,8 +1,11 @@
 @charset "UTF-8";
 <template>
   <div id="app">
-    <img class="logo" src="./assets/logo.png">
-  <h1>{{ msg }}</h1>
+    <br>
+  <div class="header">
+    <img align="middle" class="logo" src="./assets/logo.png">
+    <h1>{{ msg }}</h1>
+  </div>
   
   <form>
   
@@ -21,16 +24,25 @@
   </form>
   <form>
     <fieldset>
-      <legend><span class="number">2</span> Recieve Money</legend>
+      <legend><span class="number">2</span> Show Account</legend>
       <label for="money">Name:</label>
-      <input type="number" id="amount" name="user_amount" v-model="message" placeholder="Enter Name">
+      <input type="text" id="amount" name="user_amount" v-model="message" placeholder="Enter Name">
       <label for="money">Image URL:</label>
-      <input type="number" id="amount" name="user_amount" v-model="message" placeholder="Enter Image">
-      <label for="money">How much money would you like:</label>
-      <input type="number" id="amount" name="user_amount" v-model="message" placeholder="Enter Amount">
+      <input type="text" id="amount" name="user_amount" v-model="message" placeholder="Enter Image">
+      <label id="account_balance" for="money">Money Available: $11.4</label>
+      <!-- <input type="text" id="amount" name="user_amount" v-model="message" placeholder=""> -->
     </fieldset>
 
-    <button v-on:click="recieve_money()">Ready to go!</button>
+    <button v-on:click="show_account()">Verify Account and Check Balance</button>
+  </form>
+  <form>
+    <fieldset>
+      <legend><span class="number">3</span> Billing</legend>
+      <label for="money">Amount:</label>
+      <input type="text" id="amount" name="user_amount" v-model="message" placeholder="Enter Amount">
+    </fieldset>
+
+    <button v-on:click="checkout()">Checkout</button>
   </form>
   </div>
 
@@ -44,13 +56,11 @@ export default {
   name: 'app',
   data () {
     return {
-      msg: "Welcome to Back'Em"
+      msg: "Welcome to Back'Em !!"
     }
   },
   methods: {
     register_api(){
-        // console.log("Here")
-        // ,
         axios({
           method: "POST",
           "url":"https://canadacentral.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false&recognitionModel=recognition_01&returnRecognitionModel=false&detectionModel=detection_01"
@@ -66,39 +76,38 @@ export default {
           .then(response => {
             var objectreturn = ((JSON.stringify(JSON.parse(JSON.stringify(response)).data)));
             faceIdDetected = JSON.parse(objectreturn.slice(1,objectreturn.length-1)).faceId;
-            alert(faceIdDetected);
-            axios({
-            method: "PATCH",
-            "url":"https://back-em.firebaseio.com/.json"
-            , "data" :{
-                      'Jake': {
-                        'amount' : 0,
-                        'faceId' : faceIdDetected,
-                        'name' : 'Jake'
-                      }
-            }
-            })
-            .then(response => {
-              alert("Yes");
+            alert("SUCCESS" + '\u2714' + ": Face Id =" + faceIdDetected);
+            // axios({
+            // method: "PATCH",
+            // "url":"https://back-em.firebaseio.com/.json"
+            // , "data" :{
+            //           'Jake': {
+            //             'amount' : 0,
+            //             'faceId' : faceIdDetected,
+            //             'name' : 'Jake'
+            //           }
+            // }
+            // })
+            // .then(response => {
+            //   alert("Yes");
               
-            }
-            , error=> {console.error(error);
-            });
+            // }
+            // , error=> {console.error(error);
+            // });
           }
-          , error=> {console.error(error);
-          });
+          , error=> {console.error(error);}
+        );
           
         // alert("Testing");
-      }
-    },
-    recieve_money(){
+      },
+    show_account(){
       // alert("YES");
       axios({
           method: "POST",
           "url":"https://canadacentral.api.cognitive.microsoft.com/face/v1.0/verify"
           , "data" :{
-                    'faceId1': '3d8d1d1a-3cd5-4b3f-a56e-aca162ed490e',
-               'faceId2': '5dcfb516-f1c8-4618-abf0-3650c085a537'
+                    "faceId1": "f25b16ef-ad10-44e1-9140-7adab99e0b97",
+                    "faceId2": "f25b16ef-ad10-44e1-9140-7adab99e0b97"
           },
           "headers" :{
                     "Ocp-Apim-Subscription-Key":"6387bed598264107aeb7b956692bee3a",
@@ -107,17 +116,36 @@ export default {
               }
           })
           .then(response => {
-            alert(response);
+            alert( "ACCOUNT VERIFIED" + '\u2714' + " " + JSON.stringify(JSON.parse(JSON.stringify(response)).data));
+           alert("Account Balance: $11.4" );
+
           }
           , error=> {console.error(error);
           });
+        
+    },
+    checkout(){
+      alert("Transaction Successful " +'\u2714' + "Account balance $6.");
     }
   }
-
+}
 
 </script>
 
 <style>
+.header {
+  position: relative;
+  padding: 60px;
+  text-align: center;
+  /* background: #1abc9c; */
+  color: black;
+  font-size: 30px;
+}
+
+#account_balance {
+ display:none;
+}
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
