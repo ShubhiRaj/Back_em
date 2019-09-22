@@ -1,6 +1,6 @@
 <template>
   <div id="faceverification">
-    <p>"Testing faceverification"</p>
+    <!-- <p>"Testing faceverification"</p> -->
   </div>
 </template>
 
@@ -18,8 +18,8 @@
         axios
           .post('https://canadacentral.api.cognitive.microsoft.com/face/v1.0/verify', {
             
-               'faceId1': '3d8d1d1a-3cd5-4b3f-a56e-aca162ed490e',
-               'faceId2': '5dcfb516-f1c8-4618-abf0-3650c085a537'
+               "faceId1": "f25b16ef-ad10-44e1-9140-7adab99e0b97",
+    "faceId2": "f25b16ef-ad10-44e1-9140-7adab99e0b97"
             
           },{
               headers:{

@@ -1,6 +1,6 @@
 <template>
   <div id="facedetection">
-    <p>"Testing facedetection"</p>
+    <!-- <p>"Testing facedetection"</p> -->
   </div>
 </template>
 
@@ -13,22 +13,23 @@
         return {
           msg: 'Welcome to facedetection'
         }
-      },
-      mounted() {
-        axios
-          .post('https://canadacentral.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false&recognitionModel=recognition_01&returnRecognitionModel=false&detectionModel=detection_01', {
-              
-                    'url': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Leonardo_DiCaprio_January_2014.jpg/170px-Leonardo_DiCaprio_January_2014.jpg'
-              
-            },{
-                headers:{
-                    'Ocp-Apim-Subscription-Key':'6387bed598264107aeb7b956692bee3a',
-                    'Content-Type':'application/json',
-                    'Host': 'canadacentral.api.cognitive.microsoft.com'
-              }
-            })
-          .then(response => console.log(response))
       }
+      // ,
+      // mounted() {
+      //   axios
+      //     .post('https://canadacentral.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false&recognitionModel=recognition_01&returnRecognitionModel=false&detectionModel=detection_01', {
+              
+      //               'url': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Leonardo_DiCaprio_January_2014.jpg/170px-Leonardo_DiCaprio_January_2014.jpg'
+              
+      //       },{
+      //           headers:{
+      //               'Ocp-Apim-Subscription-Key':'6387bed598264107aeb7b956692bee3a',
+      //               'Content-Type':'application/json',
+      //               'Host': 'canadacentral.api.cognitive.microsoft.com'
+      //         }
+      //       })
+      //     .then(response => console.log(response))
+      // }
     }
 
 </script>
