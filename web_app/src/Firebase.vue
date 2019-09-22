@@ -1,6 +1,6 @@
 <template>
   <div id="firebase">
-    <p>"Testing firebase"</p>
+    <!-- <p>"Testing firebase"</p> -->
   </div>
 </template>
 
